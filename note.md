@@ -29,3 +29,25 @@ text_splitter = CharacterTextSplitter(
 ```
 
 ![alt text](./images/image-6.png)
+
+### embedding
+
+![alt text](./images/image-7.png)
+
+## chromaDB
+
+- 每次執行都會重新創建db到chromaDB
+![alt text](./images/image-8.png)
+- 問題發生
+![alt text](./images/image-9.png)
+
+### Retrivel QA
+
+![alt text](./images/image-10.png)
+
+- Retriever: langchain 方便有一個接口, 對應不同DB
+![alt text](./images/image-11.png)
+
+- chain_type=stuff
+![alt text](./images/image-12.png)
+
