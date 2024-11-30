@@ -1,41 +1,35 @@
-from langchain.document_loaders import TextLoader
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores.chroma import Chroma 
+from langchain.chat_models import ChatOpenAI
+from langchain.prompts import (
+    ChatPromptTemplate,
+    HumanMessagePromptTemplate,
+    MessagesPlaceholder,
+)
+from langchain.agents import OpenAIFunctionsAgent, AgentExecutor
 from dotenv import load_dotenv
 
+from tools.sql import run_query_tool
 load_dotenv()
 
-embeddings = OpenAIEmbeddings()
+chat = ChatOpenAI()
+prompt = ChatPromptTemplate(
+    messages=[
+        HumanMessagePromptTemplate.from_template("{input}"),
+        MessagesPlaceholder(variable_name="agent_scratchpad") # 像是memory 
+    ]
+)
+tools = [run_query_tool]
 
-text_splitter = CharacterTextSplitter(
-    separator="\n",
-    chunk_size=200,
-    chunk_overlap=0,
+agent = OpenAIFunctionsAgent(
+    llm=chat, 
+    prompt=prompt,
+    tools = tools
 )
 
-loader = TextLoader("facts.txt")
-
-docs = loader.load_and_split(
-    text_splitter=text_splitter
+agent_executor = AgentExecutor(
+    agent=agent,
+    verbose=True,
+    tools= tools
 )
 
-db=Chroma.from_documents(
-    docs, # 計算embbedings
-    embedding=embeddings,
-    persist_directory="emb"
-)
-
-# k 是輸出多少個相近結果  default=4
-results = db.similarity_search_with_score("What is an interesting fact about the English language?",
-                                          k=3 )
-
-for result in results:
-    print("\n")
-    print(result[1])
-    print(result[0].page_content)
-
-
-
-
-
+# agent_executor("How many users are in the database?") # 2000 users
+agent_executor("How many users have provided a shipping address?")

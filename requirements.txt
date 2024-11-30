@@ -3,3 +3,5 @@ openai
 python-dotenv
 tiktoken
 chromadb
+matplotlib
+squlite3
