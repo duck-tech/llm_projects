@@ -51,3 +51,6 @@ text_splitter = CharacterTextSplitter(
 - chain_type=stuff
 ![alt text](./images/image-12.png)
 
+- Remobing Duplicate Documents
+![alt text](./images/image-13.png)
+

@@ -28,7 +28,7 @@ db=Chroma.from_documents(
 
 # k 是輸出多少個相近結果  default=4
 results = db.similarity_search_with_score("What is an interesting fact about the English language?",
-                                          k=2 )
+                                          k=3 )
 
 for result in results:
     print("\n")
