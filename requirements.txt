@@ -5,3 +5,4 @@ tiktoken
 chromadb
 matplotlib
 squlite3
+pyboxen
